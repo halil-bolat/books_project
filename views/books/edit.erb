@@ -1,0 +1,6 @@
+<h1>Edit book</h1>
+<%=erb :'partials/form', :layout =>false %>
+<form action="/<%= @book.id%>" method="post">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" value="Delete">
+</form>
