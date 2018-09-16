@@ -8,33 +8,33 @@ class PostController < Sinatra::Base
   end
 
 
-  $books = [
-    {
-      id: 0,
-      title: "Book 1",
-      body: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-    },
-    {
-      id: 1,
-      title: "Book 2",
-      body: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-    },
-    {
-      id: 2,
-      title: "Book 3",
-      body: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-    },
-    {
-      id: 3,
-      title: "Book 4",
-      body: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-    },
-    {
-      id: 4,
-      title: "Book 5",
-      body: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-    }
-  ]
+  # $books = [
+  #   {
+  #     id: 0,
+  #     title: "Book 1",
+  #     body: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  #   },
+  #   {
+  #     id: 1,
+  #     title: "Book 2",
+  #     body: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  #   },
+  #   {
+  #     id: 2,
+  #     title: "Book 3",
+  #     body: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  #   },
+  #   {
+  #     id: 3,
+  #     title: "Book 4",
+  #     body: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  #   },
+  #   {
+  #     id: 4,
+  #     title: "Book 5",
+  #     body: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  #   }
+  # ]
 
   get "/new" do
     @book = {
@@ -45,52 +45,45 @@ class PostController < Sinatra::Base
     erb :'books/new'
   end
 
+  get "/" do
+    @books = Book.all
+    erb :'books/books'
+  end
 
 
   get "/:id" do
     id = params[:id].to_i
-    @book = $books[id]
+    @book = Book.find id
     erb :'books/view'
   end
 
 
-  get "/user/:id" do
-    "<h1> Hello #{params[:id]}</h1>"
-  end
-
-  get "/" do
-    @books = $books
-    erb :'books/books'
-  end
-
   post '/' do
-    new_post = {
-      id: $books.length,
-      title: params[:title],
-      body: params[:body]
-    }
-    $books.push new_post
+    id = params[:id].to_i
+    title = params[:title].to_s
+    body = params[:body].to_s
+    Book.add id, title, body
     redirect "/"
   end
 
   get '/:id/edit' do
     id = params[:id].to_i
-    @book = $books[id]
+    @book = Book.find id
     erb :'books/edit'
   end
 
 
   put '/:id' do
     id = params[:id].to_i
-    post = $books[id]
-    post[:title] = params[:title]
-    post[:body] = params[:body]
+    title = params[:title].to_s
+    body = params[:body].to_s
+    Book.edit id, title, body
     redirect "/"
   end
 
   delete '/:id' do
     id = params[:id].to_i
-    $books.delete_at id
+    Book.delete id
     redirect "/"
   end
 
